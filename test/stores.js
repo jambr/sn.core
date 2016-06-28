@@ -4,23 +4,23 @@ let should = require('should');
 let async = require('async');
 
 describe('Stores', () => {
-  let client;
+  let store;
   let helpers = {
     addKey: (done) => {
-      client.set('key', 'value', done);
+      store.set('key', 'value', done);
     },
     checkKeyAdded: (done) => { 
-      client.get('key', (err, value) => {
+      store.get('key', (err, value) => {
         should.ifError(err); 
         should(value).eql('value');
         done();
       });
     },
     removeKey: (done) => {
-      client.remove('key', done);
+      store.remove('key', done);
     },
     checkKeyRemoved: (done) => { 
-      client.get('key', (err, value) => {
+      store.get('key', (err, value) => {
         should.ifError(err); 
         should(value).eql(null);
         done();
@@ -31,10 +31,10 @@ describe('Stores', () => {
   let testSuite = (type) => {
     describe(type, () => {
       before(() => {
-        client = new Stores[type]('sn:core:testing');
+        store = new Stores[type]('sn:core:testing');
       });
       beforeEach(done => {
-        client.flush(done);
+        store.flush(done);
       });
 
       it('Should add keys', (done) => {
