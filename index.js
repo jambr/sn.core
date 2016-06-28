@@ -1,6 +1,13 @@
 'use strict';
-module.exports = {
+let index = {
   Server: require('./lib/server'),
-  KeyValueStore: require('./lib/stores/redisKeyValueStore'),
-  MessageBroker: require('./lib/messageBrokers/redis')
+  Stores: require('./lib/stores'),
+  Brokers: require('./lib/messageBrokers')
 };
+
+index.Default = {
+  Store: index.Stores.Redis,
+  Broker: index.Brokers.RabbitMQ
+};
+
+module.exports = index;
