@@ -1,6 +1,7 @@
 'use strict';
 let MessageBrokers = require('../').Brokers;
 let should = require('should');
+let async = require('async');
 
 describe('Brokers', () => {
 
@@ -39,6 +40,33 @@ describe('Brokers', () => {
             should.ifError(err);
           });    
         });
+      });
+
+      it('a message sent to a different channel shouldnt appear on my subscription', (done) => {
+        let setupGoodChannel = (next) => {
+          broker.subscribe('good-channel', () => {
+            done();
+          }, next);
+        };
+
+        let setupBadChannel = (next) => {
+          broker.subscribe('bad-channel', () => {
+            done(new Error('Message was receieved on the incorrect channel!'));
+          }, next);
+        };
+
+        let sendMessage = (err) => {
+          if(err) { return done(err); }
+          broker.publish('good-channel', 'test message', (err) => {
+            should.ifError(err);
+          });   
+        };
+
+        async.series([
+          setupGoodChannel,
+          setupBadChannel
+        ], sendMessage);
+
       });
     });
   };
