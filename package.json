@@ -41,6 +41,8 @@
   },
   "keywords": [],
   "dependencies": {
+    "amqplib": "^0.4.2",
+    "debug": "^2.2.0",
     "redis": "^2.6.2",
     "restify": "^4.1.1"
   }
