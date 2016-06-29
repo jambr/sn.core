@@ -13,11 +13,11 @@ describe('Brokers', () => {
       });
 
       beforeEach(done => {
-        broker.clearSubscriptions(done);
+        broker.reset(done);
       });
 
       afterEach(done => {
-        broker.clearSubscriptions(done);
+        broker.reset(done);
       });
 
       it('Should publish to a given channel', (done) => {
