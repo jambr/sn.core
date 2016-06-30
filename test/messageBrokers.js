@@ -20,6 +20,17 @@ describe('Brokers', () => {
         broker.reset(done);
       });
 
+      it('Should allow me to bind to multiple channels', (done) => {
+        broker.subscribe(['filter.test.multiple.channel1', 'filter.test.multiple.channel2'], (message) => {
+          should(message).eql('test message'); 
+          done();     
+        }, () => { 
+          broker.publish('filter.test.multiple.channel1', 'test message', (err) => {
+            should.ifError(err);
+          });    
+        });
+      });
+
       it('Should publish to a given channel', (done) => {
         broker.subscribe('filter.test.givenchannel', (message) => {
           should(message).eql('test message'); 
