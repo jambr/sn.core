@@ -2,7 +2,8 @@
 let index = {
   Server: require('./lib/server'),
   Stores: require('./lib/stores'),
-  Brokers: require('./lib/messageBrokers')
+  Brokers: require('./lib/messageBrokers'),
+  DebugFactory: require('./lib/debugFactory')
 };
 
 index.Default = {
