@@ -20,7 +20,7 @@ describe('Brokers', () => {
         broker.reset(done);
       });
 
-      it('Should allow me to bind to multiple channels', (done) => {
+      it('should allow me to bind to multiple channels', (done) => {
         broker.subscribe(['filter.test.multiple.channel1', 'filter.test.multiple.channel2'], (message) => {
           should(message).eql('test message'); 
           done();     
@@ -31,7 +31,7 @@ describe('Brokers', () => {
         });
       });
 
-      it('Should publish to a given channel', (done) => {
+      it('should publish to a given channel', (done) => {
         broker.subscribe('filter.test.givenchannel', (message) => {
           should(message).eql('test message'); 
           done();     
@@ -42,7 +42,7 @@ describe('Brokers', () => {
         });
       });
 
-      it('Should handle a JSON message', (done) => {
+      it('should handle a JSON message', (done) => {
         broker.subscribe('filter.test.json', (message) => {
           should(message).eql({ data: 'test' }); 
           done();     
@@ -121,11 +121,11 @@ describe('Brokers', () => {
         };
 
         let setupChannel = (next) => {
-          broker.subscribeWorker('filter.test.worker', gotMessage, next);
+          broker.subscribePersistent('filter.test.worker', 'persistent.test.worker', gotMessage, next);
         };
 
         let setupAnotherChannel = (next) => {
-          broker.subscribeWorker('filter.test.worker', gotMessage, next);
+          broker.subscribePersistent('filter.test.worker', 'persistent.test.worker', gotMessage, next);
         };
 
         let sendMessage = (err) => {
@@ -142,9 +142,9 @@ describe('Brokers', () => {
       });
 
       it('messages already receieved shouldnt be receieved again on reconnect', (done) => {
-        broker.subscribeWorker('filter.testingReconnect', () => {
+        broker.subscribePersistent('filter.testingReconnect', 'persistent.test.reconnect', () => {
           broker.reset(() => {
-            broker.subscribeWorker('filter.testingReconnect', () => {
+            broker.subscribePersistent('filter.testingReconnect', 'persistent.test.reconnect', () => {
               done(new Error('Got another message when we shouldnt have!'));
             }, done);
           });
