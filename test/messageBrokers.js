@@ -111,7 +111,8 @@ describe('Brokers', () => {
 
       it('messages on worker subscriptions should be receieved by one', (done) => {
         let count = 0;
-        let gotMessage = () => {
+        let gotMessage = (msg, meta, ack) => {
+          ack();
           count++;
           if(count === 2) {
             done(new Error('Too many messages were recieved!'));
@@ -142,15 +143,58 @@ describe('Brokers', () => {
       });
 
       it('messages already receieved shouldnt be receieved again on reconnect', (done) => {
-        broker.subscribePersistent('filter.testingReconnect', 'persistent.test.reconnect', () => {
-          broker.reset(() => {
-            broker.subscribePersistent('filter.testingReconnect', 'persistent.test.reconnect', () => {
-              done(new Error('Got another message when we shouldnt have!'));
-            }, done);
-          });
-        }, () => {
-          broker.publish('filter.testingReconnect', 'test', () => {});
-        });
+        broker.subscribePersistent(
+            'filter.testingReconnect', 
+            'persistent.test.reconnect', 
+            (msg, meta, ack) => {
+              ack();
+              broker.reset(() => {
+                broker.subscribePersistent(
+                    'filter.testingReconnect', 
+                    'persistent.test.reconnect', 
+                    () => {
+                      done(new Error('Got another message when we shouldnt have!'));
+                    }, done);
+              });
+            }, () => {
+              broker.publish('filter.testingReconnect', 'test', () => {});
+            });
+      });
+
+      it('messages not ackd should be receieved again on reconnect', (done) => {
+        broker.subscribePersistent(
+            'filter.testingReconnect', 
+            'persistent.test.reconnect', 
+            () => {
+              broker.reset(() => {
+                broker.subscribePersistent(
+                    'filter.testingReconnect', 
+                    'persistent.test.reconnect', 
+                    (msg, meta, ack) => {
+                      ack();
+                      done();
+                    }, () => {});
+              });
+            }, () => {
+              broker.publish('filter.testingReconnect', 'test', () => {});
+            });
+      });
+
+      it('messages that get nakd (ie an error) get redlivered', (done) => {
+        let first = true;
+        broker.subscribePersistent(
+            'filter.testingRedelivery', 
+            'persistent.test.redelivery', 
+            (msg, meta, ack) => {
+              if(first) {
+                first = false;
+                return ack(new Error('something bad'));
+              }
+              ack();
+              done();
+            }, () => {
+              broker.publish('filter.testingRedelivery', 'test', () => {});
+            });
       });
 
     });

@@ -77,7 +77,7 @@ describe('AMQP', () => {
       channel.assertTopicExchange('test-topic-exchange', { durable: true }, (err, exchange) => {
         channel.assertQueue('test-queue', { exclusive: true }, (err, queue) => {
           channel.bindQueueToExchange(queue, exchange, '*', () => {
-            channel.consumeQueue(queue, deride.stub, (err) => {
+            channel.consumeQueue(queue, deride.stub, true, (err) => {
               assert.ifError(err);
               channel.stopConsumingQueue(queue, done);
             });
