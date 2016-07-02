@@ -6,6 +6,3 @@ services:
   - redis
 after_script:
   - npm run test 
-notifications:
-  email:
-    - karl@jambr.co.uk 
