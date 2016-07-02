@@ -25,7 +25,7 @@
     "node": ">= 5.10.1"
   },
   "scripts": {
-    "test": "grunt mochaTest"
+    "test": "./node_modules/grunt/bin/grunt mochaTest"
   },
   "devDependencies": {
     "async": "^2.0.0-rc.6",
