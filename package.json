@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/stocknet/core.git"
+    "url": "git@github.com:jambr/sn.core.git"
   },
   "bugs": {
-    "url": "https://github.com/stocknet/core/issues"
+    "url": "https://github.com/jambr/sn.core/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/stocknet/core/blob/master/LICENSE-MIT"
+      "url": "https://github.com/jambr/sn.core/blob/master/LICENSE-MIT"
     }
   ],
   "main": "index.js",
