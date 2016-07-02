@@ -1,14 +1,8 @@
-# picker [![Coverage Status](https://coveralls.io/repos/kstoney/picker/badge.png?branch=master)](https://coveralls.io/r/kstoney/picker?branch=master) [![Dependency Status](https://david-dm.org/kstoney/picker.svg)](https://david-dm.org/kstoney/picker)
-
-API for adding stock watches to the stocknet system.
+# sn.core 
+Core libraries for stocknet
 
 ## Getting Started
-Install the module with: `npm install picker`
-
-```javascript
-var picker = new require('picker');
-picker.execute(); // "awesome"
-```
+Install the module with: `npm install sn.core`
 
 ## Documentation
 _(Coming soon)_
