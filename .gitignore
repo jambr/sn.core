@@ -1,4 +1,5 @@
 reports/
+shippable/
 node_modules/
 testresults/
 stats/
@@ -12,6 +13,7 @@ coverage/
 *.log
 *.zat
 
+test-results.xml
 checkstyle-result.xml
 coverage.*
 junit.xml
