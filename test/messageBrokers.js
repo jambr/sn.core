@@ -27,8 +27,9 @@ describe('Brokers', () => {
           should(message).eql('test message'); 
           ack(null, 'and this is the result');     
         }, () => { 
-          broker.rpc('filter.test.rpc', 'test message', (message) => {
+          broker.rpc('filter.test.rpc', 'test message', (message, meta, ack) => {
             should(message).eql('and this is the result');
+            ack();
             done();
           });    
         });

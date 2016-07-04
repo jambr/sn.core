@@ -110,8 +110,9 @@ let broker = new Broker('testing:namespace');
 
 let subscriptionSetupComplete = () => {
   /* This is where we make an RPC call. */
-  broker.rpc('filter.test.rpc', 'test message', (message) => {
+  broker.rpc('filter.test.rpc', 'test message', (message, ack) => {
   	should(message).eql('and this is the result');
+	ack();
   }); 
 };
 
