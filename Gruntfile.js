@@ -19,7 +19,15 @@ module.exports = function(grunt) {
     },
     clean: ['shippable'],
 		mochaTest: {
-			test: {
+			stdout: {
+				options: {
+          reporter: 'spec',
+					timeout: config.timeout,
+					require: config.require
+				},
+				src: config.targets.test 
+			},
+			ci: {
 				options: {
           reporter: 'mocha-multi',
           reporterOptions: {
@@ -76,6 +84,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
 
 	// Default task.
-	grunt.registerTask('default', ['env:all', 'clean', 'jshint:stdout', 'mochaTest']);
-	grunt.registerTask('ci', ['env:all', 'clean', 'jshint:checkstyle', 'mocha_istanbul', 'mochaTest']);
+	grunt.registerTask('default', ['env:all', 'clean', 'jshint:stdout', 'mochaTest:stdout']);
+	grunt.registerTask('ci', ['env:all', 'clean', 'jshint:checkstyle', 'mocha_istanbul', 'mochaTest:ci']);
 };

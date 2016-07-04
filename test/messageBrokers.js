@@ -20,6 +20,20 @@ describe('Brokers', () => {
         broker.reset(done);
       });
 
+      it('should allow me to do remote procedure calls', (done) => {
+        broker.subscribePersistent(
+          'filter.test.rpc',
+          'filter-test-rpc-owner', (message, meta, ack) => {
+          should(message).eql('test message'); 
+          ack(null, 'and this is the result');     
+        }, () => { 
+          broker.rpc('filter.test.rpc', 'test message', (message) => {
+            should(message).eql('and this is the result');
+            done();
+          });    
+        });
+      });
+
       it('should allow me to bind to multiple channels', (done) => {
         broker.subscribe(['filter.test.multiple.channel1', 'filter.test.multiple.channel2'], (message) => {
           should(message).eql('test message'); 
