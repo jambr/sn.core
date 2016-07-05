@@ -27,7 +27,7 @@ describe('Brokers', () => {
           should(message).eql('test message'); 
           ack(null, 'and this is the result');     
         }, () => { 
-          broker.rpc('filter.test.rpc', 'test message', (message, meta, ack) => {
+          broker.rpc('filter.test.rpc', 'test message', (err, message, meta, ack) => {
             should(message).eql('and this is the result');
             ack();
             done();
@@ -170,25 +170,6 @@ describe('Brokers', () => {
                     () => {
                       done(new Error('Got another message when we shouldnt have!'));
                     }, done);
-              });
-            }, () => {
-              broker.publish('filter.testingReconnect', 'test', () => {});
-            });
-      });
-
-      it('messages not ackd should be receieved again on reconnect', (done) => {
-        broker.subscribePersistent(
-            'filter.testingReconnect', 
-            'persistent.test.reconnect', 
-            () => {
-              broker.reset(() => {
-                broker.subscribePersistent(
-                    'filter.testingReconnect', 
-                    'persistent.test.reconnect', 
-                    (msg, meta, ack) => {
-                      ack();
-                      done();
-                    }, () => {});
               });
             }, () => {
               broker.publish('filter.testingReconnect', 'test', () => {});
